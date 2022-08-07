@@ -34,9 +34,20 @@ async def mute(message, reason, hours, id_user, name):
                              )
 
 
-@bot.message_handler(commands=['start', 'help'])  # КТО-ТО ДОЛЖЕН ЭТО ДОРАБОТАТЬ! ДА, КУМЧАТКА?
+@bot.message_handler(commands=['start', 'help'])  # не я
 async def explanation_of_the_commands(message: types.Message):
-    await message.reply('Привет!')
+    commands = {
+        '/Ж': 'ж',
+        '/random {number(required)} {number(optional)}': 'Рандомное число. Если аргумент один, то рандом от 0 до '
+                                                         'аргумента. Если два - от первого до второго',
+        '/count_of_chats': 'Кол-во чатов, в которых есть ботик',
+        '/my_voices': 'Кол-во голосовых от тебя (счёт ведётся с момента добавления ботика в чат)',
+        '/all_voices': 'Кол-во голосовых от всех, кто пользуется ботом(счёт ведётся с момента добавления ботика в чат)'
+    }
+    result_text = ''
+    for key, value in commands.items():
+        result_text += f'+ {key} - {value}\n'
+    await message.reply(f'Привет! Перечисляю все мои комманды:\n\n{result_text}\nТак же ботик агрится на слово "миуи"')
 
 
 @bot.message_handler(commands='ж')

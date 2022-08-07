@@ -19,11 +19,11 @@ class DataBase:
         count = self.cursor.fetchone()[0]
         self.cursor.execute('UPDATE Voices SET count = ? WHERE username = ?', [count + 1, username])
 
-    def get_voices(self, id_=None):
+    def get_voices(self, username=None):
         with self.connection:
-            if id_ is None:
+            if username is None:
                 self.cursor.execute('SELECT * FROM Voices')
                 return self.cursor.fetchall()
             else:
-                self.cursor.execute('SELECT count FROM Voices WHERE username = ?', [id_])
+                self.cursor.execute('SELECT count FROM Voices WHERE username = ?', [username])
                 return self.cursor.fetchone()
