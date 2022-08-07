@@ -12,15 +12,18 @@ class DataBase:
             if self.cursor.fetchone() is None:
                 self.cursor.execute('INSERT INTO Voices(username, count) VALUES(?, ?)', [username, 1])
             else:
-                self.cursor.execute('SELECT count FROM Voices WHERE username = ?', [username])
-                count = self.cursor.fetchone()[0]
-                self.cursor.execute('UPDATE Voices SET count = ? WHERE username = ?', [count + 1, username])
+                self.update_count(username)
 
-    def get_voices(self, all_voices=None):
+    def update_count(self, username):
+        self.cursor.execute('SELECT count FROM Voices WHERE username = ?', [username])
+        count = self.cursor.fetchone()[0]
+        self.cursor.execute('UPDATE Voices SET count = ? WHERE username = ?', [count + 1, username])
+
+    def get_voices(self, id_=None):
         with self.connection:
-            if all_voices is None:
+            if id_ is None:
                 self.cursor.execute('SELECT * FROM Voices')
                 return self.cursor.fetchall()
             else:
-                self.cursor.execute('SELECT count FROM Voices WHERE username = ?', [all_voices])
+                self.cursor.execute('SELECT count FROM Voices WHERE username = ?', [id_])
                 return self.cursor.fetchone()
